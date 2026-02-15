@@ -1,16 +1,19 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { ExtractionResult, SchematicAnalysisResult } from "../types";
 
+// Déclaration pour TypeScript de la variable injectée par Vite
+declare const __APP_API_KEY__: string;
+
 // Fonction helper pour récupérer le client de manière sécurisée
-// Cela évite que l'application plante au démarrage (page blanche) si la clé est manquante.
 const getAiClient = () => {
-  const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    console.warn("API_KEY manquante. Les appels à l'IA échoueront.");
-    // On retourne quand même une instance pour éviter le crash immédiat, 
-    // l'erreur sera attrapée lors de l'appel generateContent.
-    return new GoogleGenAI({ apiKey: 'MISSING_KEY_PLACEHOLDER' });
+  // Utilisation de la constante injectée lors du build
+  const apiKey = typeof __APP_API_KEY__ !== 'undefined' ? __APP_API_KEY__ : '';
+
+  if (!apiKey || apiKey === '' || apiKey === 'undefined') {
+    console.error("API KEY MANQUANTE. Vérifiez vos variables d'environnement Vercel (API_KEY).");
+    throw new Error("Clé API non configurée. Veuillez ajouter la variable 'API_KEY' dans les réglages de votre projet Vercel.");
   }
+  
   return new GoogleGenAI({ apiKey });
 };
 
@@ -70,7 +73,7 @@ export const extractNomenclatureFromPdf = async (base64Pdf: string): Promise<Ext
   try {
     const ai = getAiClient();
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview', // Switch to Pro model for better accuracy
+      model: 'gemini-3-pro-preview', 
       contents: {
         parts: [
           {
@@ -128,7 +131,7 @@ export const analyzeSchematics = async (base64Pdf: string): Promise<SchematicAna
   try {
     const ai = getAiClient();
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview', // Gemini 2.0/3.0 est excellent pour la vision
+      model: 'gemini-3-pro-preview',
       contents: {
         parts: [
           {
@@ -170,7 +173,6 @@ export const analyzeSchematics = async (base64Pdf: string): Promise<SchematicAna
     text = cleanJsonMarkdown(text);
     const rawData = JSON.parse(text);
 
-    // Calculer les totaux
     const pages = rawData.pages || [];
     const schematicPages = pages.filter((p: any) => p.isSchematic);
     const totalWires = schematicPages.reduce((acc: number, curr: any) => acc + (curr.wireCount || 0), 0);
