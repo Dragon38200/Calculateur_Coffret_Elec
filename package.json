@@ -1,26 +1,28 @@
 {
-  "name": "secrétario---extracteur-de-nomenclature",
+  "name": "secretario-extracteur-de-nomenclature",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "0.292.0",
+    "@google/genai": "^1.41.0",
+    "xlsx": "0.18.5",
+    "jspdf": "2.5.1",
+    "jspdf-autotable": "3.5.31",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "vite": "^5.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
-  },
-  "dependencies": {
-    "lucide-react": "0.292.0",
-    "@google/genai": "^1.41.0",
-    "react-dom": "^19.2.4",
-    "react": "^19.2.4",
-    "xlsx": "0.18.5",
-    "jspdf": "2.5.1",
-    "jspdf-autotable": "3.5.31"
-  },
-  "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
   }
 }
