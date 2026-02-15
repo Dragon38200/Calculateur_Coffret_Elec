@@ -1,21 +1,18 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { ExtractionResult, SchematicAnalysisResult } from "../types";
 
-// Déclaration pour TypeScript de la variable injectée par Vite
-declare const __APP_API_KEY__: string;
-
 // Fonction helper pour récupérer le client de manière sécurisée
 const getAiClient = () => {
-  // Utilisation de la constante injectée lors du build
-  const apiKey = typeof __APP_API_KEY__ !== 'undefined' ? __APP_API_KEY__ : '';
-
-  if (!apiKey || apiKey === '' || apiKey === 'undefined') {
+  const apiKey = process.env.API_KEY;
+  
+  if (!apiKey) {
     console.error("API KEY MANQUANTE. Vérifiez vos variables d'environnement Vercel (API_KEY).");
     throw new Error("Clé API non configurée. Veuillez ajouter la variable 'API_KEY' dans les réglages de votre projet Vercel.");
   }
   
   return new GoogleGenAI({ apiKey });
 };
+  
 
 const nomenclatureSchema: Schema = {
   type: Type.OBJECT,
