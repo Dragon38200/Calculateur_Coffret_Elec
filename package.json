@@ -9,13 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "lucide-react": "^0.564.0",
+    "lucide-react": "0.292.0",
     "@google/genai": "^1.41.0",
     "react-dom": "^19.2.4",
     "react": "^19.2.4",
-    "xlsx": "^0.18.5",
+    "xlsx": "0.18.5",
     "jspdf": "2.5.1",
-    "jspdf-autotable": "3.5.28"
+    "jspdf-autotable": "3.5.31"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
