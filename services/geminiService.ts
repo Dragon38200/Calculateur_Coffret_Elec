@@ -1,8 +1,18 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { ExtractionResult, SchematicAnalysisResult } from "../types";
 
-// Initialize the client
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Fonction helper pour récupérer le client de manière sécurisée
+// Cela évite que l'application plante au démarrage (page blanche) si la clé est manquante.
+const getAiClient = () => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    console.warn("API_KEY manquante. Les appels à l'IA échoueront.");
+    // On retourne quand même une instance pour éviter le crash immédiat, 
+    // l'erreur sera attrapée lors de l'appel generateContent.
+    return new GoogleGenAI({ apiKey: 'MISSING_KEY_PLACEHOLDER' });
+  }
+  return new GoogleGenAI({ apiKey });
+};
 
 const nomenclatureSchema: Schema = {
   type: Type.OBJECT,
@@ -58,6 +68,7 @@ const schematicSchema: Schema = {
 
 export const extractNomenclatureFromPdf = async (base64Pdf: string): Promise<ExtractionResult> => {
   try {
+    const ai = getAiClient();
     const response = await ai.models.generateContent({
       model: 'gemini-3-pro-preview', // Switch to Pro model for better accuracy
       contents: {
@@ -115,6 +126,7 @@ export const extractNomenclatureFromPdf = async (base64Pdf: string): Promise<Ext
 
 export const analyzeSchematics = async (base64Pdf: string): Promise<SchematicAnalysisResult> => {
   try {
+    const ai = getAiClient();
     const response = await ai.models.generateContent({
       model: 'gemini-3-pro-preview', // Gemini 2.0/3.0 est excellent pour la vision
       contents: {
