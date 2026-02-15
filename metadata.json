@@ -1,0 +1,5 @@
+{
+  "name": "Secrétario - Extracteur de Nomenclature",
+  "description": "Une application professionnelle pour extraire automatiquement les nomenclatures de fichiers PDF et les exporter vers Excel grâce à l'IA Gemini.",
+  "requestFramePermissions": []
+}
