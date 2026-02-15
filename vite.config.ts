@@ -1,19 +1,15 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-  // Charge les variables d'environnement (depuis .env ou Vercel)
-  // Utilise (process as any).cwd() pour éviter les erreurs TS
-  const env = loadEnv(mode, (process as any).cwd(), '');
-
-  // On récupère la clé depuis API_KEY ou VITE_API_KEY pour plus de flexibilité
-  const apiKey = env.API_KEY || env.VITE_API_KEY || '';
+  // Clé API Google Gemini configurée directement
+  const apiKey = 'AIzaSyAMPg1PD061aE7i6SAQLxxD_ThcXwTCUNE';
 
   return {
     plugins: [react()],
-    // Injection directe de la clé dans une constante globale
+    // Injection de la variable process.env.API_KEY dans l'application
     define: {
-      __APP_API_KEY__: JSON.stringify(apiKey)
+      'process.env.API_KEY': JSON.stringify(apiKey)
     },
     build: {
       outDir: 'dist',

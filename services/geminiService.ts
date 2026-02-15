@@ -1,18 +1,18 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { ExtractionResult, SchematicAnalysisResult } from "../types";
 
-// Fonction helper pour récupérer le client de manière sécurisée
+// Fonction helper pour initialiser le client Gemini
 const getAiClient = () => {
+  // La clé est injectée par Vite via process.env.API_KEY
   const apiKey = process.env.API_KEY;
-  
+
   if (!apiKey) {
-    console.error("API KEY MANQUANTE. Vérifiez vos variables d'environnement Vercel (API_KEY).");
-    throw new Error("Clé API non configurée. Veuillez ajouter la variable 'API_KEY' dans les réglages de votre projet Vercel.");
+    console.error("API KEY MANQUANTE. Vérifiez le fichier .env ou les variables Vercel.");
+    throw new Error("Clé API non configurée. Veuillez ajouter API_KEY dans votre fichier .env");
   }
   
   return new GoogleGenAI({ apiKey });
 };
-  
 
 const nomenclatureSchema: Schema = {
   type: Type.OBJECT,
